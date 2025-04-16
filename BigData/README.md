@@ -130,6 +130,8 @@ Thêm -k eventlet để chỉ định dùng eventlet worker:
 sudo ~/flask/project-folder/venv/bin/gunicorn -w 1 -k eventlet -b 0.0.0.0:80 realtime_server:app
 ```
 
+<br>
+
 ## Cái đặt Kafka trên Ubuntu sử dụng Docker
 
 ### 1. Tạo file `docker-compose.yml`
@@ -163,6 +165,8 @@ services:
 sudo docker compose up -d
 ```
 
+<br>
+
 ## Spark
 
 Chạy file `network_mouse_tracking.py` với câu lệnh sau:
@@ -174,7 +178,7 @@ spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.5 network
 - Lưu ý cần kiểm tra đúng version của `spark-sql-kafka-0-10_2.12:3.5.5`
 
 
-Tài file từ server về máy local:
+Tải file từ server về máy local:
 
 ```
 scp root@server-ip:/home/user/path/file-name C:\Users\username\Downloads

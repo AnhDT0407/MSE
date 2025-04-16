@@ -138,7 +138,7 @@ sudo ~/flask/project-folder/venv/bin/gunicorn -w 1 -k eventlet -b 0.0.0.0:80 rea
 
 Sử dụng `images` mới nhất của Kafka là `kafka:4.0.0`
 
-```
+```yml
 version: '3.8'
 services:
   kafka:

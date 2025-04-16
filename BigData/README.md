@@ -62,12 +62,12 @@ if __name__ == '__main__':
 
 #### 2.1. Cài Python + pip + virtualenv (nếu chưa có)
 
-```cmd
+```
 sudo apt update
 sudo apt install python3 python3-pip python3-venv -y
 ```
 
-Cài thêm thư viên nếu chưa có:
+Cài thêm thư viện cần thiết nếu chưa có:
 
 ```
 pip install kafka-python
@@ -128,4 +128,54 @@ Thêm -k eventlet để chỉ định dùng eventlet worker:
 
 ```
 sudo ~/flask/project-folder/venv/bin/gunicorn -w 1 -k eventlet -b 0.0.0.0:80 realtime_server:app
+```
+
+## Cái đặt Kafka trên Ubuntu sử dụng Docker
+
+### 1. Tạo file `docker-compose.yml`
+
+Sử dụng `images` mới nhất của Kafka là `kafka:4.0.0`
+
+```
+version: '3.8'
+services:
+  kafka:
+    image: apache/kafka:4.0.0
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_BROKER_ID: 1
+      KAFKA_PROCESS_ROLES: controller,broker
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+```
+
+### 2. Tải và cài đặt Docker:
+
+```
+sudo docker compose up -d
+```
+
+## Spark
+
+Chạy file `network_mouse_tracking.py` với câu lệnh sau:
+
+```
+spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.5 network_mouse_tracking.py localhost 9999
+```
+
+- Lưu ý cần kiểm tra đúng version của `spark-sql-kafka-0-10_2.12:3.5.5`
+
+
+Tài file từ server về máy local:
+
+```
+scp root@server-ip:/home/user/path/file-name C:\Users\username\Downloads
 ```

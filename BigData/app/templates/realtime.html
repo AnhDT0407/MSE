@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Mouse Path Tracker</title>
+  <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="mouseCanvas"></canvas>
+
+  <script>
+    const socket = io.connect("http://159.223.50.121:80");
+
+    socket.on("connect", () => {
+      console.log("Connected to socket server!");
+    });
+
+    const canvas = document.getElementById('mouseCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Cập nhật kích thước canvas theo cửa sổ
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    let mousePath = [];
+
+    socket.on('mouse_data', function (data) {
+      const { x, y, timestamp } = data;
+      console.log(`Mouse Data Received: X=${x}, Y=${y}, Timestamp=${timestamp}`);
+
+      mousePath.push([x, y]);
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
+      ctx.moveTo(mousePath[0][0], mousePath[0][1]);
+      for (let i = 1; i < mousePath.length; i++) {
+        ctx.lineTo(mousePath[i][0], mousePath[i][1]);
+      }
+      ctx.stroke();
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Mouse Tracker Logger</title>
+</head>
+
+<body>
+  <h2>Di chuột để ghi tọa độ...</h2>
+
+  <script>
+    let mouseMoves = [];
+
+    document.addEventListener('mousemove', (event) => {
+      const point = {
+        x: event.clientX,
+        y: event.clientY,
+        timestamp: Date.now()
+      };
+      mouseMoves.push(point);
+    });
+
+    setInterval(() => {
+      console.log(mouseMoves);
+      if (mouseMoves.length > 0) {
+        fetch('/log-mouse', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(mouseMoves)
+        });
+        mouseMoves = [];
+      }
+    }, 9000);
+  </script>
+</body>
+
+</html>

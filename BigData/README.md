@@ -62,7 +62,7 @@ if __name__ == '__main__':
 
 #### 2.1. Cài Python + pip + virtualenv (nếu chưa có)
 
-```
+```cmd
 sudo apt update
 sudo apt install python3 python3-pip python3-venv -y
 ```

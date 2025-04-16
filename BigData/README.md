@@ -113,7 +113,7 @@ Test thử truy cập: `http://your-server-ip:8000`
 Nếu chạy `gunicorn` bị lỗi có thể thử lại:
 
 ```
-sudo ~/flask/project-folder/venv/bin/gunicorn -w 4 -b 0.0.0.0:80 app:app
+sudo ~/project-folder/venv/bin/gunicorn -w 4 -b 0.0.0.0:80 app:app
 ```
 
 Để chạy WebSocket ổn định với Flask + Gunicorn, bạn cần dùng một trong các worker hỗ trợ async, phổ biến nhất là: `eventlet` hoặc `gevent`
